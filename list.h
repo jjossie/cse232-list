@@ -106,8 +106,8 @@ public:
    // Status
    //
 
-   bool empty()  const { return true; }
-   size_t size() const { return 99;   }
+   bool empty()  const { return (pHead == nullptr); }
+   size_t size() const { return numElements;   }
 
 
 private:
