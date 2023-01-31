@@ -139,7 +139,6 @@ public:
       // exercise
       alloc.construct(&l,0); // the constructor is called explicitly
       // verify
-       std::cout << l.numElements << std::endl;
       assertEmptyFixture(l);
    }  // teardown
 

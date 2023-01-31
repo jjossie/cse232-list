@@ -261,10 +261,8 @@ list <T> ::list(const std::initializer_list<T>& il)
  * Create a list initialized to a value
  ****************************************/
 template <typename T>
-list <T> ::list(size_t num)
+list <T> ::list(size_t num) : pHead(nullptr), numElements(num), pTail(nullptr)
 {
-   numElements = 99;
-   pHead = pTail = new list <T> ::Node();
 }
 
 /*****************************************
