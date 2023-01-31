@@ -227,7 +227,7 @@ private:
  * Create a list initialized to a value
  ****************************************/
 template <typename T>
-list <T> ::list(size_t num, const T & t) 
+list <T> ::list(size_t num, const T & t)
 {
    numElements = 99;
    pHead = pTail = new list <T> ::Node();
@@ -271,11 +271,7 @@ list <T> ::list(size_t num)
  * LIST :: DEFAULT constructors
  ****************************************/
 template <typename T>
-list <T> ::list()
-{
-   numElements = 99;
-   pHead = pTail = new list <T> ::Node();
-}
+list <T> ::list() : pHead(nullptr), pTail(nullptr), numElements(0) { }
 
 /*****************************************
  * LIST :: COPY constructors

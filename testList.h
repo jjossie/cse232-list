@@ -29,8 +29,8 @@ public:
 
       // Construct
       test_construct_default();
-      /*test_construct_sizeZero();
-      test_construct_sizeThree();
+      test_construct_sizeZero();
+      /*test_construct_sizeThree();
       test_construct_sizeThreeFill();
       test_constructCopy_empty();
       test_constructCopy_standard();
@@ -139,6 +139,7 @@ public:
       // exercise
       alloc.construct(&l,0); // the constructor is called explicitly
       // verify
+       std::cout << l.numElements << std::endl;
       assertEmptyFixture(l);
    }  // teardown
 
