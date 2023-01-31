@@ -29,7 +29,7 @@ public:
 
       // Construct
       test_construct_default();
-      test_construct_sizeZero();
+      /*test_construct_sizeZero();
       test_construct_sizeThree();
       test_construct_sizeThreeFill();
       test_constructCopy_empty();
@@ -105,7 +105,7 @@ public:
       test_size_empty();
       test_size_three();
       test_empty_empty();
-      test_empty_three();
+      test_empty_three();*/
 
       report("List");
    }

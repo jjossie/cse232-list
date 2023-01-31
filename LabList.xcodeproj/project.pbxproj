@@ -27,7 +27,7 @@
 		C1FD5BD52566E954003E892E /* List_115_Key */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = List_115_Key; sourceTree = BUILT_PRODUCTS_DIR; };
 		C1FD5BE12566E982003E892E /* testList.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = testList.cpp; sourceTree = "<group>"; };
 		C1FD5BE22566E982003E892E /* testList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = testList.h; sourceTree = "<group>"; };
-		C1FD5BE32566E982003E892E /* list.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = list.h; sourceTree = "<group>"; };
+		C1FD5BE32566E982003E892E /* list.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 3; lastKnownFileType = sourcecode.c.h; path = list.h; sourceTree = "<group>"; tabWidth = 3; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */

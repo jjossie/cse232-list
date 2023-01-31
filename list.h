@@ -134,18 +134,10 @@ public:
    //
    // Construct
    //
-   Node()  
-   {
-      pNext = pPrev = nullptr;
-   }
-   Node(const T &  data)  
-   {
-      pNext = pPrev = nullptr;
-   }
-   Node(      T && data)  
-   {
-      pNext = pPrev = nullptr;
-   }
+   Node(): pNext(nullptr), pPrev(nullptr) { }
+   Node(const T& data) : pNext(nullptr), pPrev(nullptr), data(data)        { }
+   Node(T&& data) : data(std::move(data)), pNext(nullptr), pPrev(nullptr)  { }
+
 
    //
    // Data
@@ -279,7 +271,7 @@ list <T> ::list(size_t num)
  * LIST :: DEFAULT constructors
  ****************************************/
 template <typename T>
-list <T> ::list() 
+list <T> ::list()
 {
    numElements = 99;
    pHead = pTail = new list <T> ::Node();
