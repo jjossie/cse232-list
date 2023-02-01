@@ -397,7 +397,6 @@ void list <T> :: push_back(const T & data)
 template <typename T>
 void list <T> ::push_back(T && data)
 {
-   
    if(pHead == nullptr)
    {
       pHead = pTail = new list <T> ::Node(data);
