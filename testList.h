@@ -32,6 +32,7 @@ public:
       test_construct_sizeZero();
       test_construct_sizeThree();
       test_construct_sizeThreeFill();
+//      test_construct_sizeThreeFill_fake();
 //      test_constructCopy_empty();
 //      test_constructCopy_standard();
 //      test_constructMove_empty();
@@ -55,21 +56,22 @@ public:
 //      test_assignInit_leftBigger();
 //
 //      // Iterator
-//      test_iterator_begin_empty();
-//      test_iterator_begin_standard();
-//      test_iterator_end_standard();
-//      test_iterator_increment_standardMiddle();
-//      test_iterator_dereference_read();
-//      test_iterator_dereference_update();
-//
-//      // Access
-//      test_front_empty();
-//      test_front_standardRead();
-//      test_front_standardWrite();
-//      test_back_empty();
-//      test_back_standardRead();
-//      test_back_standardWrite();
-//
+      test_iterator_begin_empty();
+      test_iterator_begin_standard();
+      test_iterator_end_standard();
+      test_iterator_increment_standardMiddle();
+      test_iterator_dereference_read();
+      test_iterator_dereference_update();
+         // There should be a case to catch it++ going to nullptr (it should be able to do that)
+
+      // Access
+      test_front_empty();
+      test_front_standardRead();
+      test_front_standardWrite();
+      test_back_empty();
+      test_back_standardRead();
+      test_back_standardWrite();
+
 //      // Insert
 //      test_pushback_empty();
 //      test_pushback_standard();
@@ -86,20 +88,20 @@ public:
 //      test_insertMove_empty();
 //      test_insertMove_standardFront();
 //      test_insertMove_standardMiddle();
-//
-//      // Remove
-//      test_clear_empty();
-//      test_clear_standard();
-//      test_popback_empty();
-//      test_popback_standard();
-//      test_popback_single();
-//      test_popfront_empty();
-//      test_popfront_standard();
-//      test_popfront_single();
-//      test_erase_empty();
-//      test_erase_standardFront();
-//      test_erase_standardMiddle();
-//      test_erase_standardEnd();
+
+      // Remove
+      test_clear_empty();
+      test_clear_standard();
+      test_popback_empty();
+      test_popback_standard();
+      test_popback_single();
+      test_popfront_empty();
+      test_popfront_standard();
+      test_popfront_single();
+      test_erase_empty();
+      test_erase_standardFront();
+      test_erase_standardMiddle();
+      test_erase_standardEnd();
 
       // Status
       test_size_empty();
@@ -219,6 +221,45 @@ public:
       teardownStandardFixture(l);
    }
 
+   // construct with a size of three and fill
+   void test_construct_sizeThreeFill_fake()
+   {  // setup
+      int s(99);
+      std::allocator<custom::list<int>> alloc;
+//      custom::list<int> l;
+//      l.pHead = (custom::list<int>::Node*)0xBADF00D1;
+//      l.pTail = (custom::list<int>::Node*)0xBADF00D2;
+//      l.numElements = 99;
+      // exercise
+//      alloc.construct(&l, size_t(3), s); // the constructor is called explicitly
+      auto l = custom::list<int>(size_t(3), s);
+      // verify
+      //    +----+   +----+   +----+
+      //    | 99 | - | 99 | - | 99 |
+      //    +----+   +----+   +----+
+      assertUnit(l.numElements == 3);
+      assertUnit(l.pHead != nullptr);
+      if (l.pHead)
+      {
+         assertUnit(l.pHead->data == int(99));
+         assertUnit(l.pHead->pPrev == nullptr);
+         assertUnit(l.pHead->pNext != nullptr);
+         if (l.pHead->pNext != nullptr)
+         {
+            assertUnit(l.pHead->pNext->data == int(99));
+            assertUnit(l.pHead->pNext->pPrev == l.pHead);
+            assertUnit(l.pHead->pNext->pNext != nullptr);
+            if (l.pHead->pNext->pNext != nullptr)
+            {
+               assertUnit(l.pHead->pNext->pNext->data == int(99));
+               assertUnit(l.pHead->pNext->pNext->pPrev == l.pHead->pNext);
+               assertUnit(l.pHead->pNext->pNext->pNext == nullptr);
+            }
+         }
+      }
+      // teardown
+      teardownStandardFixture(l);
+   }
    /***************************************
     * DESTRUCTOR
     ***************************************/
