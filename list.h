@@ -229,8 +229,17 @@ private:
 template <typename T>
 list <T> ::list(size_t num, const T & t)
 {
-   numElements = 99;
-   pHead = pTail = new list <T> ::Node();
+   if (num > 0)
+   {
+         
+      for (int i =0;i<num;i++)
+      {
+         push_back(t);
+         
+      }
+      
+      
+   }
 }
 
 /*****************************************
@@ -261,8 +270,20 @@ list <T> ::list(const std::initializer_list<T>& il)
  * Create a list initialized to a value
  ****************************************/
 template <typename T>
-list <T> ::list(size_t num) : pHead(nullptr), numElements(num), pTail(nullptr)
+list <T> ::list(size_t num) : numElements(num), pHead(nullptr), pTail(nullptr)
 {
+   
+   if (num > 0)
+   {
+         
+      for (int i =0;i<num;i++)
+      {
+         push_back(T());
+         std::cout<< i << std::endl;
+      }
+      
+      
+   }
 }
 
 /*****************************************
@@ -354,13 +375,37 @@ void list <T> :: clear()
 template <typename T>
 void list <T> :: push_back(const T & data)
 {
-
+   if(pHead == nullptr)
+   {
+      pHead = pTail = new list <T> ::Node(data);
+   }
+   else
+   {
+      auto newElement = new list <T> ::Node(data);
+      newElement->pPrev = pTail;
+      pTail->pNext = newElement;
+      pTail = newElement;
+      std::cout << "YOLOOO" << std::endl;
+   }
 }
 
 template <typename T>
 void list <T> ::push_back(T && data)
 {
-
+   
+   if(pHead == nullptr)
+   {
+      pHead = pTail = new list <T> ::Node(data);
+   }
+   else
+   {
+      auto newElement = new list <T> ::Node(data);
+      newElement->pPrev = pTail;
+      pTail->pNext = newElement;
+      pTail = newElement;
+   }
+   
+   
 }
 
 /*********************************************
