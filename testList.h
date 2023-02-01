@@ -32,8 +32,8 @@ public:
       test_construct_sizeZero();
       test_construct_sizeThree();
       test_construct_sizeThreeFill();
-//      test_constructCopy_empty();
-//      test_constructCopy_standard();
+      test_constructCopy_empty();
+      test_constructCopy_standard();
 //      test_constructMove_empty();
 //      test_constructMove_standard();
 //      test_constructInit_empty();
@@ -54,13 +54,13 @@ public:
 //      test_assignInit_rightBigger();
 //      test_assignInit_leftBigger();
 //
-//      // Iterator
-//      test_iterator_begin_empty();
-//      test_iterator_begin_standard();
-//      test_iterator_end_standard();
-//      test_iterator_increment_standardMiddle();
-//      test_iterator_dereference_read();
-//      test_iterator_dereference_update();
+      // Iterator
+      test_iterator_begin_empty();
+      test_iterator_begin_standard();
+      test_iterator_end_standard();
+      test_iterator_increment_standardMiddle();
+      test_iterator_dereference_read();
+      test_iterator_dereference_update();
 //
 //      // Access
 //      test_front_empty();
