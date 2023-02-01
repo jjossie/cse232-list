@@ -182,6 +182,8 @@ public:
    {
       if (p)
          return p->data;
+      else
+         throw "ERROR: unable to access data from an empty list";
    }
 
    // postfix increment
