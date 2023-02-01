@@ -71,8 +71,8 @@ public:
    //
 
    class  iterator;
-   iterator begin()  { return iterator(); }
-   iterator rbegin() { return iterator(); }
+   iterator begin()  { return iterator(pHead); }
+   iterator rbegin() { return iterator(pTail); }
    iterator end()    { return iterator(); }
 
    //
@@ -161,54 +161,58 @@ class list <T> :: iterator
    friend class custom::list;
 public:
    // constructors, destructors, and assignment operator
-   iterator() 
+   iterator() : p(nullptr) {}
+   iterator(Node * p) : p(p) {}
+   iterator(const iterator  & rhs) : p(rhs.p)
    {
-      p = new typename list <T> ::Node;
-   }
-   iterator(Node * p) 
-   {
-      p = new typename list <T> ::Node;
-   }
-   iterator(const iterator  & rhs) 
-   {
-      p = new typename list <T> ::Node;
+//      p = new typename list <T> ::Node;
    }
    iterator & operator = (const iterator & rhs)
    {
+      this->p = rhs.p;
       return *this;
    }
    
    // equals, not equals operator
-   bool operator == (const iterator & rhs) const { return true; }
-   bool operator != (const iterator & rhs) const { return true; }
+   bool operator == (const iterator & rhs) const { return (p == rhs.p); }
+   bool operator != (const iterator & rhs) const { return (p != rhs.p); }
 
    // dereference operator, fetch a node
    T & operator * ()
    {
-      return *(new T);
+      if (p)
+         return p->data;
    }
 
    // postfix increment
    iterator operator ++ (int postfix)
    {
+      if (p)
+         p = p->pNext;
       return *this;
    }
 
    // prefix increment
    iterator & operator ++ ()
    {
+      if (p)
+         p = p->pNext;
       return *this;
    }
    
    // postfix decrement
    iterator operator -- (int postfix)
    {
+      if (p)
+         p = p->pPrev;
       return *this;
    }
 
    // prefix decrement
    iterator & operator -- ()
    {
+      if (p)
+         p = p->pPrev;
       return *this;
    } 
 
@@ -341,7 +345,18 @@ list <T>& list <T> :: operator = (const std::initializer_list<T>& rhs)
 template <typename T>
 void list <T> :: clear()
 {
-
+   while (pHead != nullptr)
+   {
+      auto pDelete = pHead;
+      pHead = pHead->pNext;
+      delete pDelete;
+      numElements--;
+   }
+   pTail = nullptr;
+//   for (auto & it = begin(); it; it++){
+//      delete it.p;
+//      it.p=nullptr;
+//   }
 }
 
 /*********************************************
@@ -393,7 +408,7 @@ void list <T> ::push_front(T && data)
 template <typename T>
 void list <T> ::pop_back()
 {
-
+   erase(iterator(pTail));
 }
 
 /*********************************************
@@ -406,7 +421,7 @@ void list <T> ::pop_back()
 template <typename T>
 void list <T> ::pop_front()
 {
-
+   erase(iterator(pHead));
 }
 
 /*********************************************
@@ -419,7 +434,10 @@ void list <T> ::pop_front()
 template <typename T>
 T & list <T> :: front()
 {
-   return *(new T);
+   if (pHead)
+      return pHead->data;
+   else
+      throw "ERROR: unable to access data from an empty list";
 }
 
 /*********************************************
@@ -432,7 +450,10 @@ T & list <T> :: front()
 template <typename T>
 T & list <T> :: back()
 {
-   return *(new T);
+   if (pTail)
+      return pTail->data;
+   else
+      throw "ERROR: unable to access data from an empty list";
 }
 
 /******************************************
@@ -445,7 +466,38 @@ T & list <T> :: back()
 template <typename T>
 typename list <T> :: iterator  list <T> :: erase(const list <T> :: iterator & it)
 {
-   return end();
+   if (it.p == nullptr)
+      return nullptr;
+
+   if (it.p->pPrev)           // Take care of the previous node
+      it.p->pPrev->pNext = it.p->pNext;
+   else                       // There is no previous node, so move the head
+   {
+      assert(it.p == pHead);  // This is the head, right?
+      pHead = it.p->pNext;
+   }
+
+   if (it.p->pNext)           // Take care of the next node
+      it.p->pNext->pPrev = it.p->pPrev;
+   else                       // There is no next node, so move the tail
+   {
+      assert(it.p == pTail);  // This is the tail, right?
+      pTail = it.p->pPrev;    // If there is only one node (no pPrev OR pNext), then
+                              // both of these blocks are executed, but that's ok
+                              // because this will just assign pHead or pTail to nullptr.
+   }
+
+   list<T>::Node * pReturn;
+
+   if (it.p->pNext)
+      pReturn = it.p->pNext;
+   else
+      pReturn = nullptr;
+
+   delete it.p;
+   numElements--;
+//   it.p = nullptr;
+   return pReturn;
 }
 
 /******************************************
