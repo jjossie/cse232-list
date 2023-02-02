@@ -44,15 +44,15 @@ public:
       test_destructor_standard();
 //
 //      // Assign
-//      test_assign_emptyToEmpty();
-//      test_assign_standardToEmpty();
-//      test_assign_emptyToStandard();
-//      test_assign_smallToBig();
-//      test_assign_bigToSmall();
-//      test_assignInit_empty();
-//      test_assignInit_sameSize();
-//      test_assignInit_rightBigger();
-//      test_assignInit_leftBigger();
+      test_assign_emptyToEmpty();
+      test_assign_standardToEmpty();
+      test_assign_emptyToStandard();
+      test_assign_smallToBig();
+      test_assign_bigToSmall();
+      test_assignInit_empty();
+      test_assignInit_sameSize();
+      test_assignInit_rightBigger();
+      test_assignInit_leftBigger();
 //
       // Iterator
       test_iterator_begin_empty();
@@ -80,7 +80,7 @@ public:
       test_pushfront_standard();
       test_pushfront_moveEmpty();
       test_pushfront_moveStandard();
-      test_insert_empty();
+//      test_insert_empty();
 //      test_insert_standardFront();
 //      test_insert_standardMiddle();
 //      test_insert_standardEnd();

@@ -322,7 +322,31 @@ list <T> ::list(list <T>&& rhs)
 template <typename T>
 list <T>& list <T> :: operator = (list <T> && rhs)
 {
+   auto itRhs = rhs.begin();
+   auto itLhs = begin();
+   while (itRhs != rhs.end() && itLhs != end())
+   {
+      *itLhs = std::move(*itRhs);
+      ++itLhs;
+      ++itRhs;
+   }
+   if (itRhs != rhs.end())
+   {
+      while (itRhs != rhs.end())
+      {
+         push_back(std::move(*itRhs));
+         ++itRhs;
+      }
+      
+   }
+   else if(rhs.empty())
+      clear();
+   
+   else if (itLhs != end())
+      while (itLhs.p)
+         itLhs = erase(itLhs);
    return *this;
+   
 }
 
 /**********************************************
@@ -335,6 +359,30 @@ list <T>& list <T> :: operator = (list <T> && rhs)
 template <typename T>
 list <T> & list <T> :: operator = (list <T> & rhs)
 {
+
+   auto itRhs = rhs.begin();
+   auto itLhs = begin();
+   while (itRhs != rhs.end() && itLhs != end())
+   {
+      *itLhs = *itRhs;
+      ++itLhs;
+      ++itRhs;
+   }
+   if (itRhs != rhs.end())
+   {
+      while (itRhs != rhs.end())
+      {
+         push_back(*itRhs);
+         ++itRhs;
+      }
+      
+   }
+   else if(rhs.empty())
+      clear();
+   
+   else if (itLhs != end())
+      while (itLhs.p)
+         itLhs = erase(itLhs);
    return *this;
 }
 
@@ -348,6 +396,24 @@ list <T> & list <T> :: operator = (list <T> & rhs)
 template <typename T>
 list <T>& list <T> :: operator = (const std::initializer_list<T>& rhs)
 {
+
+   auto itLhs = begin();
+   for (auto item : rhs)
+   {
+      if (itLhs == end())
+      {
+         push_back(item);
+      }
+      else
+      {
+         *itLhs = item;
+      }
+      itLhs++;
+   }
+   if (itLhs != end())
+      while (itLhs.p)
+         itLhs = erase(itLhs);
+   
    return *this;
 }
 
@@ -369,10 +435,7 @@ void list <T> :: clear()
       numElements--;
    }
    pTail = nullptr;
-//   for (auto & it = begin(); it; it++){
-//      delete it.p;
-//      it.p=nullptr;
-//   }
+   
 }
 
 /*********************************************
