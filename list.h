@@ -248,8 +248,10 @@ template <typename T>
 template <class Iterator>
 list <T> ::list(Iterator first, Iterator last)
 {
-   numElements = 99;
-   pHead = pTail = new list <T> ::Node();
+   pHead = pTail = nullptr;
+   numElements = 0;
+   for (auto it = first;it != last;it++)
+      push_back(*it);
 }
 
 /*****************************************
@@ -259,8 +261,10 @@ list <T> ::list(Iterator first, Iterator last)
 template <typename T>
 list <T> ::list(const std::initializer_list<T>& il)
 {
-   numElements = 99;
-   pHead = pTail = new list <T> ::Node();
+   pHead = pTail = nullptr;
+   numElements = 0;
+   for (auto it = il.begin();it != il.end();it++)
+      push_back(*it);
 }
 
 /*****************************************
@@ -271,10 +275,7 @@ template <typename T>
 list <T> ::list(size_t num) : numElements(0), pHead(nullptr), pTail(nullptr)
 {
    for (int i =0;i<num;i++)
-   {
       push_back(T());
-      
-   }
 }
 
 /*****************************************
@@ -289,10 +290,10 @@ list <T> ::list() : pHead(nullptr), pTail(nullptr), numElements(0) { }
 template <typename T>
 list <T> ::list(list& rhs) 
 {
-   this->pHead = rhs.pHead;
-   this->pTail = rhs.pTail;
-   this->numElements = rhs.numElements;
-   
+   pHead = pTail = nullptr;
+   numElements = 0;
+   for (auto it = rhs.begin();it != rhs.end();it++)
+      push_back(*it);
 }
 
 /*****************************************
@@ -302,8 +303,13 @@ list <T> ::list(list& rhs)
 template <typename T>
 list <T> ::list(list <T>&& rhs)
 {
-   numElements = 99;
-   pHead = pTail = new list <T> ::Node();
+   pHead = rhs.pHead;
+   pTail = rhs.pTail;
+   numElements = rhs.numElements;
+   
+   rhs.pHead = rhs.pTail =  nullptr;
+   rhs.numElements = 0;
+   
 }
 
 /**********************************************
@@ -423,13 +429,35 @@ void list <T> ::push_back(T && data)
 template <typename T>
 void list <T> :: push_front(const T & data)
 {
-
+   if(pTail == nullptr)
+   {
+      pHead = pTail = new list <T> ::Node(data);
+   }
+   else
+   {
+      auto newElement = new list <T> ::Node(data);
+      newElement->pNext = pHead;
+      pHead->pPrev = newElement;
+      pHead = newElement;
+   }
+   numElements++;
 }
 
 template <typename T>
 void list <T> ::push_front(T && data)
 {
-
+   if(pTail == nullptr)
+   {
+      pHead = pTail = new list <T> ::Node(data);
+   }
+   else
+   {
+      auto newElement = new list <T> ::Node(data);
+      newElement->pNext = pHead;
+      pHead->pPrev = newElement;
+      pHead = newElement;
+   }
+   numElements++;
 }
 
 
@@ -547,7 +575,9 @@ template <typename T>
 typename list <T> :: iterator list <T> :: insert(list <T> :: iterator it,
                                                  const T & data) 
 {
-   return end();
+   
+      return begin();
+   
 }
 
 template <typename T>
