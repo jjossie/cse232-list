@@ -134,16 +134,16 @@ public:
    //
    // Construct
    //
-   Node(): pNext(nullptr), pPrev(nullptr) { }
-   Node(const T& data) : pNext(nullptr), pPrev(nullptr), data(data)        { }
-   Node(T&& data) : data(std::move(data)), pNext(nullptr), pPrev(nullptr)  { }
+   Node()              : pNext(nullptr), pPrev(nullptr)                         { }
+   Node(const T& data) : pNext(nullptr), pPrev(nullptr), data(data)             { }
+   Node(T&& data)      : data(std::move(data)), pNext(nullptr), pPrev(nullptr)  { }
 
 
    //
    // Data
    //
 
-   T data;                 // user data
+   T data;             // user data
    Node * pNext;       // pointer to next node
    Node * pPrev;       // pointer to previous node
 };
@@ -161,9 +161,9 @@ class list <T> :: iterator
    friend class custom::list;
 public:
    // constructors, destructors, and assignment operator
-   iterator() : p(nullptr) {}
-   iterator(Node * p) : p(p) {}
-   iterator(const iterator  & rhs) : p(rhs.p) {}
+   iterator()                      : p(nullptr) {}
+   iterator(Node * p)              : p(p)       {}
+   iterator(const iterator  & rhs) : p(rhs.p)   {}
    iterator & operator = (const iterator & rhs)
    {
       this->p = rhs.p;
@@ -232,7 +232,7 @@ private:
 template <typename T>
 list <T> ::list(size_t num, const T & t) : numElements(0), pHead(nullptr), pTail(nullptr)
 {
-   for (int i =0;i<num;i++)
+   for (int i = 0; i < num; i++)
       push_back(t);
 }
 
@@ -246,7 +246,7 @@ list <T> ::list(Iterator first, Iterator last)
 {
    pHead = pTail = nullptr;
    numElements = 0;
-   for (auto it = first;it != last;it++)
+   for (auto it = first; it != last; it++)
       push_back(*it);
 }
 
@@ -259,7 +259,7 @@ list <T> ::list(const std::initializer_list<T>& il)
 {
    pHead = pTail = nullptr;
    numElements = 0;
-   for (auto it = il.begin();it != il.end();it++)
+   for (auto it = il.begin(); it != il.end(); it++)
       push_back(*it);
 }
 
@@ -288,8 +288,6 @@ list <T> ::list(list& rhs)
 {
    pHead = pTail = nullptr;
    numElements = 0;
-//   for (auto it = rhs.begin();it != rhs.end();it++)
-//      push_back(*it);
    *this = rhs;
 }
 
@@ -318,14 +316,19 @@ list <T> ::list(list <T>&& rhs)
 template <typename T>
 list <T>& list <T> :: operator = (list <T> && rhs)
 {
+   // Create iterators for side-by-side lists
    auto itRhs = rhs.begin();
    auto itLhs = begin();
+
+   // Copy rhs to lhs until one list is empty
    while (itRhs != rhs.end() && itLhs != end())
    {
       *itLhs = std::move(*itRhs);
       ++itLhs;
       ++itRhs;
    }
+
+   // If rhs is longer than lhs, create new nodes on lhs
    if (itRhs != rhs.end())
    {
       while (itRhs != rhs.end())
@@ -335,6 +338,8 @@ list <T>& list <T> :: operator = (list <T> && rhs)
       }
       
    }
+
+   // If lhs is longer than rhs, delete extra nodes
    else if(rhs.empty())
       clear();
    
@@ -355,15 +360,17 @@ list <T>& list <T> :: operator = (list <T> && rhs)
 template <typename T>
 list <T> & list <T> :: operator = (list <T> & rhs)
 {
-
+   // Create iterators for side-by-side lists
    auto itRhs = rhs.begin();
    auto itLhs = begin();
+   // Copy rhs to lhs until one list is empty
    while (itRhs != rhs.end() && itLhs != end())
    {
       *itLhs = *itRhs;
       ++itLhs;
       ++itRhs;
    }
+   // If rhs is longer than lhs, create new nodes on lhs
    if (itRhs != rhs.end())
    {
       while (itRhs != rhs.end())
@@ -373,6 +380,7 @@ list <T> & list <T> :: operator = (list <T> & rhs)
       }
       
    }
+   // If lhs is longer than rhs, delete extra nodes
    else if(rhs.empty())
       clear();
    
@@ -392,20 +400,23 @@ list <T> & list <T> :: operator = (list <T> & rhs)
 template <typename T>
 list <T>& list <T> :: operator = (const std::initializer_list<T>& rhs)
 {
-
    auto itLhs = begin();
+   // Loop through rhs list
    for (auto item : rhs)
    {
+      // Create new nodes if rhs is longer than lhs
       if (itLhs == end())
       {
          push_back(item);
       }
+      // Otherwise, just assign the value over to lhs
       else
       {
          *itLhs = item;
       }
       itLhs++;
    }
+   // Trim off extra space if lhs is longer than rhs
    if (itLhs != end())
       while (itLhs.p)
          itLhs = erase(itLhs);
@@ -685,7 +696,7 @@ typename list <T> :: iterator list <T> :: insert(list <T> :: iterator it,
       return begin();
    }
 
-      // Inserting at the end
+   // Inserting at the end
    else if (it == end() )
    {
       // this is the same as push_back(data);
@@ -697,7 +708,7 @@ typename list <T> :: iterator list <T> :: insert(list <T> :: iterator it,
       return iterator(pNew);
    }
 
-      // Inserting at the beginning or middle
+   // Inserting at the beginning or middle
    else if (it != end())
    {
       auto pNew = new list<T>::Node(std::move(data));
