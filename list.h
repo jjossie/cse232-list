@@ -53,9 +53,7 @@ public:
    list(const std::initializer_list<T>& il);
    template <class Iterator>
    list(Iterator first, Iterator last);
-  ~list() 
-   {
-   }
+  ~list()  { clear(); }
 
    // 
    // Assign
@@ -106,7 +104,7 @@ public:
    // Status
    //
 
-   bool empty()  const { return (pHead == nullptr); }
+   bool empty()  const { return (size() == 0); }
    size_t size() const { return numElements;   }
 
 
@@ -242,10 +240,8 @@ list <T> ::list(size_t num, const T & t) : numElements(0), pHead(nullptr), pTail
  ****************************************/
 template <typename T>
 template <class Iterator>
-list <T> ::list(Iterator first, Iterator last)
+list <T> ::list(Iterator first, Iterator last) : pHead(nullptr), pTail(nullptr), numElements(0)
 {
-   pHead = pTail = nullptr;
-   numElements = 0;
    for (auto it = first; it != last; it++)
       push_back(*it);
 }
@@ -255,10 +251,8 @@ list <T> ::list(Iterator first, Iterator last)
  * Create a list initialized to a set of values
  ****************************************/
 template <typename T>
-list <T> ::list(const std::initializer_list<T>& il)
+list <T> ::list(const std::initializer_list<T>& il) : pHead(nullptr), pTail(nullptr), numElements(0)
 {
-   pHead = pTail = nullptr;
-   numElements = 0;
    for (auto it = il.begin(); it != il.end(); it++)
       push_back(*it);
 }
@@ -284,10 +278,8 @@ list <T> ::list() : pHead(nullptr), pTail(nullptr), numElements(0) { }
  * LIST :: COPY constructors
  ****************************************/
 template <typename T>
-list <T> ::list(list& rhs) 
+list <T> ::list(list& rhs) : pHead(nullptr), pTail(nullptr), numElements(0)
 {
-   pHead = pTail = nullptr;
-   numElements = 0;
    *this = rhs;
 }
 
@@ -296,12 +288,8 @@ list <T> ::list(list& rhs)
  * Steal the values from the RHS
  ****************************************/
 template <typename T>
-list <T> ::list(list <T>&& rhs)
+list <T> ::list(list <T>&& rhs)  : pHead(rhs.pHead), pTail(rhs.pTail), numElements(rhs.numElements)
 {
-   pHead = rhs.pHead;
-   pTail = rhs.pTail;
-   numElements = rhs.numElements;
-   
    rhs.pHead = rhs.pTail = nullptr;
    rhs.numElements = 0;
 }
@@ -347,7 +335,6 @@ list <T>& list <T> :: operator = (list <T> && rhs)
       while (itLhs.p)
          itLhs = erase(itLhs);
    return *this;
-   
 }
 
 /**********************************************
